@@ -5,7 +5,7 @@
 Text match is a library that makes it simpler to search through a piece text to find desired parts.
 
 e.g.
-book-name Dune
+book-name Dune 
 
 will be matched by the C++ code:
 
