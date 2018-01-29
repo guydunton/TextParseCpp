@@ -1,5 +1,5 @@
 ﻿#include "catch.hpp"
-#include "Text.h"
+#include "Text.hpp"
 
 TEST_CASE("Split string works")
 {

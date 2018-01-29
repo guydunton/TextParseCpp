@@ -1,7 +1,7 @@
 ﻿#ifndef MATCHER_HPP
 #define MATCHER_HPP
 
-#include "Text.h"
+#include "Text.hpp"
 #include "Meta.hpp"
 #include <functional>
 #include <vector>
@@ -31,7 +31,8 @@ private:
 	bool canParse(const std::vector<std::string>& parts) const
 	{
 		const int maxGrabIndex = *std::max_element(grabbing.begin(), grabbing.end());
-		return parts.size() >= std::max(matchers.size(), static_cast<unsigned int>(maxGrabIndex) + 1);
+		return parts.size() >= std::max(static_cast<unsigned int>(matchers.size()), 
+		static_cast<unsigned int>(maxGrabIndex) + 1);
 	}
 
 	template <int... Indices>
