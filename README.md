@@ -1,5 +1,7 @@
 # TextMatch
 
+[![Build Status](https://travis-ci.org/gdunton/TextMatch.svg?branch=master)](https://travis-ci.org/gdunton/TextMatch)
+
 Text match is a library that makes it simpler to search through a piece text to find desired parts.
 
 e.g.
