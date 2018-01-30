@@ -1,0 +1,12 @@
+image:
+  - Visual Studio 2013
+clone_folder: c:\projects\source
+build_script:
+- cmd: >-
+    mkdir build
+    cd build
+    cmake c:\projects\source -G "Visual Studio 12 2013"
+    cmake --build . --config "Debug"
+    
+test_script:
+- cmd: ctest -C Debug
