@@ -19,6 +19,12 @@ public:
 		matchingTokens(std::move(other.matchingTokens)),
 		selectionIndices(std::move(other.selectionIndices))
 	{}
+	
+	MatchBuilderImpl(MatchBuilderImpl&& other) :
+		matchingTokens(std::move(other.matchingTokens)),
+		selectionIndices(std::move(other.selectionIndices)),
+		invokeFunction(std::move(other.invokeFunction))
+	{}
 
 	template <typename... Tokens>
 	MatchBuilderImpl& matching(Tokens&&... tokens) {
