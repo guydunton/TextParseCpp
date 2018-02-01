@@ -50,5 +50,5 @@ namespace Detail {
 template <int N>
 using IndexSequence_t = typename Detail::IndexSequenceGen<N>::type;
 
-static_assert(std::is_same_v<IndexSequence_t<3>, IndexSequence<0, 1, 2>>, "Failed");
+static_assert(std::is_same<IndexSequence_t<3>, IndexSequence<0, 1, 2>>::value, "Failed");
 #endif
