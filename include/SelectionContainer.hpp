@@ -11,28 +11,17 @@ class SelectionContainer {
 
 	class Base {
 	public:
-
-		Base(std::vector<size_t> selectionIndices) : selectionIndices(std::move(selectionIndices)) {}
-
 		virtual ~Base() = default;
 		virtual ReturnT performMatch(const std::vector<std::string>& parts, OutputT& output) const = 0;
-
-		bool canMatch(const std::vector<std::string>& parts) const {
-			const size_t maxGrabIndex = *std::max_element(selectionIndices.begin(), selectionIndices.end());
-			return parts.size() >= maxGrabIndex + 1;
-		}
-	protected:
-		std::vector<size_t> selectionIndices;
+		virtual bool canMatch(const std::vector<std::string>& parts) const = 0;
+		
 	};
 
-	template <typename MyRet, typename... Args>
+	template <typename MyRet, typename Func>
 	class Derived : public Base {
 	public:
-
-		using InvokeFunctionT = std::function<ReturnT(const Args&..., OutputT&)>;
-
-		Derived(std::vector<size_t> selectionIndices, InvokeFunctionT invokeFunction) : 
-			Base(std::move(selectionIndices)),
+		Derived(std::vector<size_t> selectionIndices, Func invokeFunction) : 
+			selectionIndices(std::move(selectionIndices)),
 			invokeFunction(std::move(invokeFunction))
 		{}
 
@@ -42,11 +31,17 @@ class SelectionContainer {
 		}
 
 		MyRet performMatch(const std::vector<std::string>& parts, OutputT& output) const override {
-			callMatchFunction(parts, output, IndexSequence_t<sizeof...(Args)>{});
+			callMatchFunction(parts, output, IndexSequence_t<FunctionTraits<Func>::Arity - 1>{});
+		}
+		
+		bool canMatch(const std::vector<std::string>& parts) const override {
+			const size_t maxGrabIndex = *std::max_element(selectionIndices.begin(), selectionIndices.end());
+			return parts.size() >= maxGrabIndex + 1;
 		}
 
 	private:
-		InvokeFunctionT invokeFunction;
+		std::vector<size_t> selectionIndices;
+		Func invokeFunction;
 	};
 
 
@@ -54,9 +49,9 @@ public:
 
 	SelectionContainer() = default;
 
-	template <typename... Args>
-	void init(std::vector<size_t> selectionIndices, std::function<ReturnT(const Args&..., OutputT&)> invokeFunction) {
-		this->self.reset(new Derived<ReturnT, Args...>{ std::move(selectionIndices), std::move(invokeFunction) });
+	template <typename T>
+	void init(std::vector<size_t> selectionIndices, T invokeFunction) {
+		this->self.reset(new Derived<ReturnT, T>{ std::move(selectionIndices), std::move(invokeFunction) });
 	}
 
 
