@@ -47,7 +47,7 @@ public:
 	
 	Matcher<OutputT, LambdaReturn> finalize() {
 		SelectionContainer<OutputT, LambdaReturn> selection;
-		selection.template init<Args...>(std::move(selectionIndices), std::move(invokeFunction));
+		selection.init(std::move(selectionIndices), std::move(invokeFunction));
 
 		return Matcher<OutputT, LambdaReturn>(matchingTokens, selection);
 	}
