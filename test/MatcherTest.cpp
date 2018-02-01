@@ -1,16 +1,15 @@
 ﻿#include "catch.hpp"
-#include "Matcher.hpp"
+#include "MatchBuilder.hpp"
 
 TEST_CASE("Matcher grabs correct part of string")
 {
 	const auto text1 = "description something";
 	const auto matcher = createMatcher<std::string>()
 		.matching("description")
-		.grab(1)
-		.call([](const std::string& description, std::string& output)
-		{
+		.selecting(1)
+		.invoking([](const std::string& description, std::string& output) {
 			output = description;
-		});
+		}).finalize();
 
 	std::string result1;
 	matcher.match(text1, &result1);
@@ -27,8 +26,9 @@ TEST_CASE("Matcher doesn't out-of-range exceptions when the line is too small")
 	const auto text1 = "";
 	const auto matcher = createMatcher<std::string>()
 		.matching("description")
-		.grab(1)
-		.call(nullptr);
+		.selecting(1)
+		.invoking([](const std::string&, std::string&){})
+		.finalize();
 
 	std::string result1;
 	REQUIRE_NOTHROW(matcher.match(text1, &result1));
@@ -40,11 +40,11 @@ TEST_CASE("Matcher works matching multiple parts in order")
 	bool lambdaCalled = false;
 	const auto matcher = createMatcher<std::string>()
 		.matching("ip", "address")
-		.grab(2)
-		.call([&lambdaCalled](const std::string&, std::string& )
+		.selecting(2)
+		.invoking([&lambdaCalled](const std::string&, std::string& )
 		{
 			lambdaCalled = true;
-		});
+		}).finalize();
 
 	SECTION("Works with text that matches")
 	{
@@ -67,12 +67,12 @@ TEST_CASE("Matcher grabbing multiple parts works correctly")
 {
 	const auto matcher = createMatcher<std::string>()
 		.matching("ip")
-		.grab(1)
-		.grab(2)
-		.call([](const std::string& part1, const std::string& part2, std::string& output)
+		.selecting(1)
+		.selecting(2)
+		.invoking([](const std::string& part1, const std::string& part2, std::string& output)
 		{
 			output = part1 + " " + part2;
-		});
+		}).finalize();
 
 	const auto text1 = "ip matcher test";
 

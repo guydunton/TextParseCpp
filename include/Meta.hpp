@@ -2,62 +2,53 @@
 #define META_HPP
 
 //-------------------------------------------------------------
-// Push Back
+// Function Traits
 //-------------------------------------------------------------
+template <typename T>
+struct FunctionTraits : public FunctionTraits<decltype(&T::operator())> {};
 
-template <typename List, typename New> struct PushBack;
-
-template<template<typename...> class List, typename... Elements, typename New>
-struct PushBack<List<Elements...>, New>
-{
-	using type = List<Elements..., New>;
+template <typename Ret, typename Class, typename... Args>
+struct FunctionTraits<Ret(Class::*)(Args...) const> {
+	static const int Arity = sizeof...(Args);
+	using ReturnType = Ret;
 };
 
 //-------------------------------------------------------------
-// Pop front
+// Function folding
 //-------------------------------------------------------------
-template <typename List> struct PopFront;
-
-template <template<typename...> class List, typename... Elements, typename Front>
-struct PopFront<List<Front, Elements...>>
-{
-	using type = List<Elements...>;
-};
-
-//-------------------------------------------------------------
-// Get Front
-//-------------------------------------------------------------
-template <typename List> struct Front;
-
-template <template <typename...> class List, typename... Elements, typename First>
-struct Front<List<First, Elements...>>
-{
-	using type = First;
-};
-
+template <typename T, typename... Args>
+void foldIntoVector(std::vector<T>& vec, Args&&... args) {
+	// This is a terrible hack but it enables forwarding before C++17
+	(void)std::initializer_list<int>{ (vec.emplace_back(std::forward<Args>(args)), 0)... };
+}
 
 //-------------------------------------------------------------
 // Indices Sequence
 //-------------------------------------------------------------
-template <int... Vals> struct sequence {};
+template <int... Vals> struct IndexSequence {};
 
-template <int ... Vals> struct seq_gen;
+namespace Detail {
 
-template <int I, int... Args> struct seq_gen<I, Args...>
-{
-	// Recursively create a sequence with decremented values
-	using type = typename seq_gen<I - 1, I - 1, Args...>::type;
-};
-// Base of recursion
-template<int ... Args> struct seq_gen<0, Args...>
-{
-	using type = sequence<Args...>;
-};
+	template <int ... Vals> struct IndexSequenceGen;
 
-// This will generate a sequence of integers. e.g. sequence_t<5> => sequence<0, 1, 2, 3, 4>;
+	template <int I, int... Args> struct IndexSequenceGen<I, Args...> {
+		// Recursively create a sequence with decremented values
+		using type = typename IndexSequenceGen<I - 1, I - 1, Args...>::type;
+	};
+
+	// Base of recursion
+	template<int ... Args> struct IndexSequenceGen<0, Args...> {
+		using type = IndexSequence<Args...>;
+	};
+}
+
+
+
+// This will generate a sequence of integers. e.g. IndexSequence_t<5> => sequence<0, 1, 2, 3, 4>;
 // To use put as parameter to template function e.g. 
 // template <int... Indices> void func(sequence<Indices>);
 template <int N>
-using sequence_t = typename seq_gen<N>::type;
+using IndexSequence_t = typename Detail::IndexSequenceGen<N>::type;
 
+static_assert(std::is_same_v<IndexSequence_t<3>, IndexSequence<0, 1, 2>>, "Failed");
 #endif

@@ -12,7 +12,9 @@ namespace Text
 		do {
 			until = std::find(start, text.end(), separator);
 			elems.emplace_back(start, until);
-			start = until + 1;
+
+			// Don't like this but just until it's working correctly
+			if (until != text.end()) start = until + 1;
 		} while (until != text.end());
 		return elems;
 	}

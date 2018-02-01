@@ -9,8 +9,26 @@ endif()
 
 set(CMAKE_CXX_STANDARD 11)
 
+set(SOURCES
+	main.cpp
+	MatcherTest.cpp
+	TextTest.cpp
+)
+
+set(HEADERS
+	../include/MatchBuilder.hpp
+	../include/Meta.hpp
+	../include/Matcher.hpp
+	../include/SelectionContainer.hpp
+)
 
 include_directories(../include)
-add_executable(Tests main.cpp MatcherTest.cpp TextTest.cpp)
-target_link_libraries(Tests --coverage)
+add_executable(Tests ${SOURCES} ${HEADERS})
+
+if (MSVC)
+	target_link_libraries(Tests)
+else()
+	target_link_libraries(Tests --coverage)
+endif()
+
 add_test(Test Tests)
