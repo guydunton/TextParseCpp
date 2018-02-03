@@ -13,13 +13,16 @@ set(SOURCES
 	main.cpp
 	ParserTest.cpp
 	TextTest.cpp
+	CombinedParserTest.cpp
 )
 
 set(HEADERS
+	../include/Parser.hpp
 	../include/ParserBuilder.hpp
 	../include/Meta.hpp
-	../include/Matcher.hpp
+	../include/ParserCore.hpp
 	../include/SelectionContainer.hpp
+	../include/CombinedParserCore.hpp
 )
 
 include_directories(../include)

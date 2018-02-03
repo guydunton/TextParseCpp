@@ -1,46 +1,44 @@
-#ifndef MATCHER_HPP
-#define MATCHER_HPP
+#ifndef PARSER_HPP
+#define PARSER_HPP
 
-#include "Text.hpp"
-#include "Meta.hpp"
-#include "SelectionContainer.hpp"
-#include <functional>
-#include <vector>
+#include <memory>
+#include "ParserCore.hpp"
+#include "CombinedParserCore.hpp"
 
 template <typename OutputT, typename LambdaReturn = void>
 class Parser
 {
+    using ParserCoreT = ParserCore<OutputT, LambdaReturn>;
 public:
-
-	Parser() = default;
-
-	Parser(std::vector<std::string> matchingTokens, SelectionContainer<OutputT, LambdaReturn> selectionContainer) :
-		matchingTokens(std::move(matchingTokens)), selectionContainer(std::move(selectionContainer))
-	{}
-
-
-	void match(const std::string& text, OutputT* output) const
-	{
-		const auto splitText = Text::lineParts(text);
-
-		if(canParse(splitText))
-		{
-			if (std::equal(matchingTokens.begin(), matchingTokens.end(), splitText.begin()))
-			{
-				selectionContainer.performMatch(splitText, *output);
-			}
-		}
-	}
-
-	bool canParse(const std::vector<std::string>& parts) const
-	{
-		return parts.size() >= static_cast<unsigned int>(matchingTokens.size()) && selectionContainer.canMatch(parts);
-	}
-
+    Parser() = default;
+    
+    Parser(std::vector<std::string> matchingTokens, SelectionContainer<OutputT, LambdaReturn> selectionContainer) :
+        parsingCore(std::make_shared<ParserCoreT>(std::move(matchingTokens), std::move(selectionContainer)))
+    {}
+    
+    Parser(std::vector<std::shared_ptr<ParserCoreT>> parsers) :
+        parsingCore(std::make_shared<CombinedParserCore<OutputT, LambdaReturn>>(std::move(parsers)))
+    {}
+    
+    void parse(const std::string& text, OutputT* output) const
+    {
+        parsingCore->parse(text, output);
+    }
+    
+    Parser mergeWithParser(const Parser& other) const
+    {
+        return Parser({ parsingCore, other.parsingCore });
+    }
+    
 private:
-	std::vector<std::string> matchingTokens;
-	SelectionContainer<OutputT, LambdaReturn> selectionContainer;
+    std::shared_ptr<ParserCoreT> parsingCore;
 };
 
+template <typename OutputT, typename LambdaReturn>
+Parser<OutputT, LambdaReturn> operator&(const Parser<OutputT, LambdaReturn>& lhs,
+                                        const Parser<OutputT, LambdaReturn>& rhs)
+{
+    return lhs.mergeWithParser(rhs);
+}
 
 #endif

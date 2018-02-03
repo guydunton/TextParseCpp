@@ -12,12 +12,12 @@ TEST_CASE("Parser grabs correct part of string")
 		}).finalize();
 
 	std::string result1;
-	parser.match(text1, &result1);
+	parser.parse(text1, &result1);
 	REQUIRE(result1 == "something");
 
 	const auto text2 = "something completely different";
 	std::string result2;
-	parser.match(text2, &result2);
+	parser.parse(text2, &result2);
 	REQUIRE(result2.empty());
 }
 
@@ -31,7 +31,7 @@ TEST_CASE("Parser doesn't out-of-range exceptions when the line is too small")
 		.finalize();
 
 	std::string result1;
-	REQUIRE_NOTHROW(parser.match(text1, &result1));
+	REQUIRE_NOTHROW(parser.parse(text1, &result1));
 	REQUIRE(result1.empty());
 }
 
@@ -50,7 +50,7 @@ TEST_CASE("Parser works matching multiple parts in order")
 	{
 		const auto text1 = "ip address addressName";
 		std::string result1;
-		parser.match(text1, &result1);
+		parser.parse(text1, &result1);
 		REQUIRE(lambdaCalled);
 	}
 
@@ -58,7 +58,7 @@ TEST_CASE("Parser works matching multiple parts in order")
 	{
 		const auto text2 = "ip address1 addressName";
 		std::string result2;
-		parser.match(text2, &result2);
+		parser.parse(text2, &result2);
 		REQUIRE(!lambdaCalled);
 	}
 }
@@ -78,18 +78,7 @@ TEST_CASE("Parser grabbing multiple parts works correctly")
 
 	std::string result1;
 
-	parser.match(text1, &result1);
+	parser.parse(text1, &result1);
 	REQUIRE(result1 == "matcher test");
 }
-
-TEST_CASE("A combined parser does the same thing as both componenets")
-{
-    
-}
-
-
-
-
-
-
 
