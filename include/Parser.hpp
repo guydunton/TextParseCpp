@@ -1,4 +1,4 @@
-﻿#ifndef MATCHER_HPP
+#ifndef MATCHER_HPP
 #define MATCHER_HPP
 
 #include "Text.hpp"
@@ -8,13 +8,13 @@
 #include <vector>
 
 template <typename OutputT, typename LambdaReturn = void>
-class Matcher
+class Parser
 {
 public:
 
-	Matcher() = default;
+	Parser() = default;
 
-	Matcher(std::vector<std::string> matchingTokens, SelectionContainer<OutputT, LambdaReturn> selectionContainer) :
+	Parser(std::vector<std::string> matchingTokens, SelectionContainer<OutputT, LambdaReturn> selectionContainer) :
 		matchingTokens(std::move(matchingTokens)), selectionContainer(std::move(selectionContainer))
 	{}
 
