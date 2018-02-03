@@ -1,10 +1,10 @@
-﻿#include "catch.hpp"
-#include "MatchBuilder.hpp"
+#include "catch.hpp"
+#include "ParserBuilder.hpp"
 
-TEST_CASE("Matcher grabs correct part of string")
+TEST_CASE("Parser grabs correct part of string")
 {
 	const auto text1 = "description something";
-	const auto matcher = createMatcher<std::string>()
+	const auto parser = createParser<std::string>()
 		.matching("description")
 		.selecting(1)
 		.invoking([](const std::string& description, std::string& output) {
@@ -12,33 +12,33 @@ TEST_CASE("Matcher grabs correct part of string")
 		}).finalize();
 
 	std::string result1;
-	matcher.match(text1, &result1);
+	parser.parse(text1, &result1);
 	REQUIRE(result1 == "something");
 
 	const auto text2 = "something completely different";
 	std::string result2;
-	matcher.match(text2, &result2);
+	parser.parse(text2, &result2);
 	REQUIRE(result2.empty());
 }
 
-TEST_CASE("Matcher doesn't out-of-range exceptions when the line is too small")
+TEST_CASE("Parser doesn't out-of-range exceptions when the line is too small")
 {
 	const auto text1 = "";
-	const auto matcher = createMatcher<std::string>()
+	const auto parser = createParser<std::string>()
 		.matching("description")
 		.selecting(1)
 		.invoking([](const std::string&, std::string&){})
 		.finalize();
 
 	std::string result1;
-	REQUIRE_NOTHROW(matcher.match(text1, &result1));
+	REQUIRE_NOTHROW(parser.parse(text1, &result1));
 	REQUIRE(result1.empty());
 }
 
-TEST_CASE("Matcher works matching multiple parts in order")
+TEST_CASE("Parser works matching multiple parts in order")
 {
 	bool lambdaCalled = false;
-	const auto matcher = createMatcher<std::string>()
+	const auto parser = createParser<std::string>()
 		.matching("ip", "address")
 		.selecting(2)
 		.invoking([&lambdaCalled](const std::string&, std::string& )
@@ -50,7 +50,7 @@ TEST_CASE("Matcher works matching multiple parts in order")
 	{
 		const auto text1 = "ip address addressName";
 		std::string result1;
-		matcher.match(text1, &result1);
+		parser.parse(text1, &result1);
 		REQUIRE(lambdaCalled);
 	}
 
@@ -58,14 +58,14 @@ TEST_CASE("Matcher works matching multiple parts in order")
 	{
 		const auto text2 = "ip address1 addressName";
 		std::string result2;
-		matcher.match(text2, &result2);
+		parser.parse(text2, &result2);
 		REQUIRE(!lambdaCalled);
 	}
 }
 
-TEST_CASE("Matcher grabbing multiple parts works correctly")
+TEST_CASE("Parser grabbing multiple parts works correctly")
 {
-	const auto matcher = createMatcher<std::string>()
+	const auto parser = createParser<std::string>()
 		.matching("ip")
 		.selecting(1)
 		.selecting(2)
@@ -78,6 +78,7 @@ TEST_CASE("Matcher grabbing multiple parts works correctly")
 
 	std::string result1;
 
-	matcher.match(text1, &result1);
+	parser.parse(text1, &result1);
 	REQUIRE(result1 == "matcher test");
 }
+

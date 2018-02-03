@@ -11,15 +11,18 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCES
 	main.cpp
-	MatcherTest.cpp
+	ParserTest.cpp
 	TextTest.cpp
+	CombinedParserTest.cpp
 )
 
 set(HEADERS
-	../include/MatchBuilder.hpp
+	../include/Parser.hpp
+	../include/ParserBuilder.hpp
 	../include/Meta.hpp
-	../include/Matcher.hpp
+	../include/ParserCore.hpp
 	../include/SelectionContainer.hpp
+	../include/CombinedParserCore.hpp
 )
 
 include_directories(../include)

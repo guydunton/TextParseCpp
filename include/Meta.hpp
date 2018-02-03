@@ -1,4 +1,4 @@
-﻿#ifndef META_HPP
+#ifndef META_HPP
 #define META_HPP
 
 //-------------------------------------------------------------
