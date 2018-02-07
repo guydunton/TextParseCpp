@@ -14,6 +14,8 @@ set(SOURCES
 	ParserTest.cpp
 	TextTest.cpp
 	CombinedParserTest.cpp
+    InvokeTest.cpp
+    FunctionTest.cpp
 )
 
 set(HEADERS

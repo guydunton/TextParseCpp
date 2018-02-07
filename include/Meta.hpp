@@ -1,6 +1,9 @@
 #ifndef META_HPP
 #define META_HPP
 
+#include <type_traits>
+#include <tuple>
+
 //-------------------------------------------------------------
 // Function Traits
 //-------------------------------------------------------------
@@ -11,6 +14,21 @@ template <typename Ret, typename Class, typename... Args>
 struct FunctionTraits<Ret(Class::*)(Args...) const> {
 	static const int Arity = sizeof...(Args);
 	using ReturnType = Ret;
+    using TupleType = std::tuple<Args...>;
+};
+
+template <typename Ret, typename... Args>
+struct FunctionTraits<Ret (*)(Args...)> {
+    static const int Arity = sizeof...(Args);
+    using ReturnType = Ret;
+    using TupleType = std::tuple<Args...>;
+};
+
+template <typename Class, typename Val>
+struct FunctionTraits<Val (Class::*)> {
+    static const int Arity = 1;
+    using ReturnType = void;
+    using TupleType = std::tuple<>;
 };
 
 //-------------------------------------------------------------
@@ -21,6 +39,11 @@ void foldIntoVector(std::vector<T>& vec, Args&&... args) {
 	// This is a terrible hack but it enables forwarding before C++17
 	(void)std::initializer_list<int>{ (vec.emplace_back(std::forward<Args>(args)), 0)... };
 }
+
+template <typename... Args>
+struct TakeFirst {
+    using type = typename std::tuple_element<0, std::tuple<Args...>>::type;
+};
 
 //-------------------------------------------------------------
 // Indices Sequence

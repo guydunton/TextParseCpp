@@ -1,10 +1,10 @@
 #ifndef MATCH_BUILDER_HPP
 #define MATCH_BUILDER_HPP
-#include <functional>
 #include <string>
 #include <vector>
 #include "Parser.hpp"
 #include "Meta.hpp"
+#include "Function.hpp"
 
 template <typename OutputT, typename LambdaReturn, typename... Args>
 class ParserBuilderImpl {
@@ -38,9 +38,16 @@ public:
 	ParserBuilderImpl<OutputT, typename FunctionTraits<T>::ReturnType, Args...> invoking(T lambda) {
 		using NewMatchBuilder = ParserBuilderImpl<OutputT, typename FunctionTraits<T>::ReturnType, Args...>;
 		NewMatchBuilder newBuilder{ std::move(*this) };
-		newBuilder.invokeFunction = lambda;
+        newBuilder.invokeFunction = std::move(ParserSpace::Function<LambdaReturn(const Args&..., OutputT&)>(lambda));
 		return newBuilder;
 	}
+    
+    template <typename Ret>
+    ParserBuilderImpl<OutputT, Ret, Args...> invoking(Ret(*functionPtr)(Args&&...)) {
+        ParserBuilderImpl<OutputT, Ret, Args...> newBuilder{ std::move(*this) };
+        newBuilder.invokeFunction = functionPtr;
+        return newBuilder;
+    }
 	
 	Parser<OutputT, LambdaReturn> finalize() {
 		SelectionContainer<OutputT, LambdaReturn> selection;
@@ -56,7 +63,7 @@ private:
 
 	std::vector<std::string> matchingTokens;
 	std::vector<size_t> selectionIndices;
-	std::function<LambdaReturn(const Args&..., OutputT&)> invokeFunction;
+    ParserSpace::Function<LambdaReturn(const Args&..., OutputT&)> invokeFunction;
 };
 
 template <typename OutputT>
