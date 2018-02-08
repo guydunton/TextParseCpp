@@ -5,7 +5,8 @@ namespace ParserSpace {
     namespace Detail {
         template <typename Ret, typename... Args>
         struct FuncBase {
-            virtual Ret call(Args&&... args) const = 0;
+	        virtual ~FuncBase() = default;
+	        virtual Ret call(Args&&... args) const = 0;
         };
         
         template <typename T, typename Ret, typename... Args>

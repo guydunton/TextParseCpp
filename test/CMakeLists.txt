@@ -25,6 +25,8 @@ set(HEADERS
 	../include/ParserCore.hpp
 	../include/SelectionContainer.hpp
 	../include/CombinedParserCore.hpp
+	../include/Function.hpp
+	../include/FunctionImpl.hpp
 )
 
 include_directories(../include)

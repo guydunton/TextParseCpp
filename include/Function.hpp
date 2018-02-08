@@ -36,8 +36,8 @@ namespace ParserSpace {
             using Traits = FunctionTraits<T>;
             static_assert(std::is_same<typename Traits::ReturnType, Return>::value,
                           "Return type for the lambda must be the same as the Function");
-            static_assert(std::is_same<typename Traits::TupleType, std::tuple<Args...>>::value,
-                          "Arguments for the function object must be the same as those for Function");
+			static_assert(std::is_same<typename Traits::TupleType, std::tuple<Args...>>::value,
+				"Lambda args much mash Function args");
         }
         
         template <typename Ret, typename... FuncArgs>

@@ -21,8 +21,8 @@ TEST_CASE("Invoke works with function pointer") {
 namespace {
     struct Book {
         std::string title;
-        void setAuthor(const std::string& author) {
-            this->author = author;
+        void setAuthor(const std::string& auth) {
+            this->author = auth;
         }
         std::string author;
     };
