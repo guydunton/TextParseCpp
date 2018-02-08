@@ -14,21 +14,13 @@ template <typename Ret, typename Class, typename... Args>
 struct FunctionTraits<Ret(Class::*)(Args...) const> {
 	static const int Arity = sizeof...(Args);
 	using ReturnType = Ret;
-    using TupleType = std::tuple<Args...>;
+	using TupleType = std::tuple<Args...>;
 };
 
 template <typename Ret, typename... Args>
 struct FunctionTraits<Ret (*)(Args...)> {
     static const int Arity = sizeof...(Args);
     using ReturnType = Ret;
-    using TupleType = std::tuple<Args...>;
-};
-
-template <typename Class, typename Val>
-struct FunctionTraits<Val (Class::*)> {
-    static const int Arity = 1;
-    using ReturnType = void;
-    using TupleType = std::tuple<>;
 };
 
 //-------------------------------------------------------------

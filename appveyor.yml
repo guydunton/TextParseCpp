@@ -1,5 +1,7 @@
-image:
+os:
   - Visual Studio 2013
+  - Visual Studio 2015
+  - Visual Studio 2017
 clone_folder: c:\projects\source
 build_script:
 - cmd: >-
@@ -7,7 +9,7 @@ build_script:
     
     cd build
     
-    cmake c:\projects\source -G "Visual Studio 12 2013"
+    cmake c:\projects\source
     
     cmake --build . --config "Debug"
     

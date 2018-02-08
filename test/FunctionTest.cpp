@@ -73,7 +73,3 @@ TEST_CASE("Function works with member data pointer and passing in const ref")
 {
     ParserSpace::Function<void(const std::string&, Book&)> memberObj{ &Book::title };
 }
-
-
-
-

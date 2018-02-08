@@ -34,11 +34,11 @@ public:
 		return std::move(*this);
 	}
 
-	template <typename T>
+	template <typename T, typename T2= typename std::enable_if<!std::is_member_pointer<T>::value>::type>
 	ParserBuilderImpl<OutputT, typename FunctionTraits<T>::ReturnType, Args...> invoking(T lambda) {
 		using NewMatchBuilder = ParserBuilderImpl<OutputT, typename FunctionTraits<T>::ReturnType, Args...>;
 		NewMatchBuilder newBuilder{ std::move(*this) };
-        newBuilder.invokeFunction = std::move(ParserSpace::Function<LambdaReturn(const Args&..., OutputT&)>(lambda));
+		newBuilder.invokeFunction = lambda;
 		return newBuilder;
 	}
     
@@ -48,6 +48,20 @@ public:
         newBuilder.invokeFunction = functionPtr;
         return newBuilder;
     }
+
+	template <typename Ret, typename Class, typename... FuncArgs>
+	ParserBuilderImpl<OutputT, Ret, Args...> invoking(Ret(Class::*memberFunc)(FuncArgs...)) {
+		ParserBuilderImpl<OutputT, Ret, Args...> newBuilder{ std::move(*this) };
+		newBuilder.invokeFunction = memberFunc;
+		return newBuilder;
+	}
+
+	template <typename Class, typename Val>
+	ParserBuilderImpl<OutputT, void, Args...> invoking(Val(Class::*memberObj)) {
+		ParserBuilderImpl<OutputT, void, Args...> newBuilder{ std::move(*this) };
+		newBuilder.invokeFunction = memberObj;
+		return newBuilder;
+	}
 	
 	Parser<OutputT, LambdaReturn> finalize() {
 		SelectionContainer<OutputT, LambdaReturn> selection;
