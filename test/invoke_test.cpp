@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "../include/ParserBuilder.hpp"
+#include <parser/parser_builder.hpp>
 
 void handleTitle(const std::string& title, std::string& output) {
     output = title;

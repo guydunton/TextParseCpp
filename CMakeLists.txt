@@ -15,6 +15,12 @@ if (NOT MSVC)
         endif()
 endif()
 
+file(GLOB_RECURSE include_headers "include/*.hpp")
+source_group("include_headers" FILES ${include_headers})
+
 enable_testing()
 
+include_directories(include)
+
 add_subdirectory(test)
+add_subdirectory(examples)

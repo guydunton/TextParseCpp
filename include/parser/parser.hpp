@@ -2,8 +2,8 @@
 #define PARSER_HPP
 
 #include <memory>
-#include "ParserCore.hpp"
-#include "CombinedParserCore.hpp"
+#include "detail/parser_core.hpp"
+#include "detail/combined_parser_core.hpp"
 
 template <typename OutputT, typename LambdaReturn = void>
 class Parser

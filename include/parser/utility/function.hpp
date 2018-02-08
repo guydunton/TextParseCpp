@@ -2,8 +2,8 @@
 #define Function_hpp
 
 #include <memory>
-#include "FunctionImpl.hpp"
-#include "Meta.hpp"
+#include "function_impl.hpp"
+#include "meta.hpp"
 
 namespace ParserSpace {
     

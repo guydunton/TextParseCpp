@@ -3,8 +3,7 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <functional>
-#include "Meta.hpp"
+#include "../utility/meta.hpp"
 
 template <typename OutputT, typename ReturnT>
 class SelectionContainer {

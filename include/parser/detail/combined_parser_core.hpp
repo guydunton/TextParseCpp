@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <vector>
-#include "ParserCore.hpp"
+#include "parser_core.hpp"
 
 template<typename T, typename U>
 class Parser;

@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "../include/Function.hpp"
+#include <parser/utility/function.hpp>
 
 TEST_CASE("Function works with lambda")
 {

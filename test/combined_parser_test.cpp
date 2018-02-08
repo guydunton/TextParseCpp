@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "ParserBuilder.hpp"
+#include <parser/parser_builder.hpp>
 
 TEST_CASE("A combined parser does the same thing as both componenets")
 {
