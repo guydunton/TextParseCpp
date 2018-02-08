@@ -14,6 +14,21 @@ namespace ParserSpace {
     public:
         
         Function() = default;
+        ~Function() = default;
+
+		Function(const Function&) = delete;
+		Function& operator=(const Function&) = delete;
+
+		Function(Function&& other) : 
+    		base(std::move(other.base))
+		{}
+
+		Function& operator=(Function&& other)
+		{
+			if (this == &other) return *this;
+			base = std::move(other.base);
+			return *this;
+		}
         
         template <typename T> Function(T lambda) :
         base(new Detail::LambdaFunc<T, Return, Args...>(lambda))
