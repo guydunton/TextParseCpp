@@ -2,9 +2,9 @@
 #define MATCH_BUILDER_HPP
 #include <string>
 #include <vector>
-#include "Parser.hpp"
-#include "Meta.hpp"
-#include "Function.hpp"
+#include "parser.hpp"
+#include "utility/meta.hpp"
+#include "utility/function.hpp"
 
 template <typename OutputT, typename LambdaReturn, typename... Args>
 class ParserBuilderImpl {
