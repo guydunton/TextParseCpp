@@ -82,3 +82,21 @@ TEST_CASE("Parser grabbing multiple parts works correctly")
 	REQUIRE(result1 == "matcher test");
 }
 
+TEST_CASE("Parser works with multiple lines of text") 
+{
+	const auto parser = createParser<std::string>()
+		.matching("date")
+		.selecting(1)
+		.invoking([](const std::string& date, std::string& output){
+			output = date;
+		}).finalize();
+
+	const auto text =
+		"date today\n"
+		"something else";
+
+	std::string output;
+	parser.parse(text, &output);
+
+	REQUIRE(output == "today");
+}
