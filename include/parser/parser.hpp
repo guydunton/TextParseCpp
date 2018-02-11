@@ -22,7 +22,10 @@ public:
     
     void parse(const std::string& text, OutputT* output) const
     {
-        parsingCore->parse(text, output);
+		for (const auto& line : Text::splitString(text, '\n'))
+		{
+			parsingCore->parse(line, output);
+		}
     }
     
     Parser mergeWithParser(const Parser& other) const

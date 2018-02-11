@@ -55,16 +55,20 @@ Parser<Book> createBookParser() {
 			book.pages = stoi(pagesString);
 		}).finalize();
 
-	return title & author & publicationDate & pages;
+	return (title & author & publicationDate & pages);
 }
 
 int main() {
 	const auto bookParser = createBookParser();
 
-	// Create the book text somehow
+	const auto text = 
+		"Book: Dune\n"
+		"author: F.Herbert\n"
+		"Published: 01/08/1965\n"
+		"Pages: 412";
 
 	Book book;
-	// bookParser.parse(..., &book);
+	bookParser.parse(text, &book);
 
 	return 0;
 }

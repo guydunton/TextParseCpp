@@ -25,15 +25,15 @@ public:
 protected:
     virtual void performParse(const std::string& text, OutputT& output) const
     {
-        const auto splitText = Text::lineParts(text);
-        
-        if(canParse(splitText))
-        {
-            if (std::equal(matchingTokens.begin(), matchingTokens.end(), splitText.begin()))
-            {
-                selectionContainer.performMatch(splitText, output);
-            }
-        }
+		const auto splitText = Text::lineParts(text);
+
+		if (canParse(splitText))
+		{
+			if (std::equal(matchingTokens.begin(), matchingTokens.end(), splitText.begin()))
+			{
+				selectionContainer.performMatch(splitText, output);
+			}
+		}
     }
 
 private:
