@@ -80,8 +80,8 @@ const auto p2 = createParser<Book>()
 	.invoking(&Book::setTitle).finalize();
 ```
 The parer will do the correct thing. 
-*Pointers to member functions must have the same number of arguments as the number of select calls.
-*Pointers to member data must always take a single argument so only 1 select can be in the parser.
+* Pointers to member functions must have the same number of arguments as the number of select calls.
+* Pointers to member data must always take a single argument so only 1 select can be in the parser.
 
 ## Future plans
 - [x] Combine parsers together to form a new combines parser.
