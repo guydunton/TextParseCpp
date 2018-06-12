@@ -90,3 +90,6 @@ The parer will do the correct thing.
 - [ ] Allow chaining parsers so that returns from a lambda are passed into sub-parsers.
 - [ ] Allow a parser to span multiple lines by calling an until functions.
 - [ ] The matching function can be more complex to allow match tokens to be "any" or "not".
+
+
+edit
