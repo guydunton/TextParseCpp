@@ -1,9 +1,5 @@
 # TextMatch
 
-[![Build Status](https://travis-ci.org/guydunton/TextParseCpp.svg?branch=master)](https://travis-ci.org/guydunton/TextParseCpp)
-[![Build status](https://ci.appveyor.com/api/projects/status/wlcba6c1b9vsrdqq?svg=true)](https://ci.appveyor.com/project/gdunton/textmatch)
-[![codecov](https://codecov.io/gh/guydunton/TextParseCpp/branch/master/graph/badge.svg)](https://codecov.io/gh/guydunton/TextParseCpp)
-
 TextParseCpp is a library to make parsing text into objects a little easier.
 
 This library is an exploration at a replacement to the sort of code I'm used to seeing for parsing text. 
